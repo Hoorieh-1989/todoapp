@@ -10,7 +10,7 @@ import {
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-const COLORS = { primary: "#1f145c", white: "#fff" };
+const COLORS = { primary: "#1f149c", white: "#fff" };
 
 const App = () => {
   const [todos, setTodos] = React.useState([]);
@@ -48,14 +48,8 @@ const App = () => {
   const deleteTodo = (todoId) => {
     const newTodosItem = todos.filter((item) => item.id != todoId);
     setTodos(newTodosItem);
-    const newTodo={
-  id:doneTodo[0].id,
-  task:doneTodo[0].task,
-  completed:true,
-};
   };
-
-  const clearAllTodos = () => {
+const clearAllTodos = () => {
     Alert.alert("Confirm", "Clear todos?", [
       {
         text: "Yes",
@@ -67,7 +61,7 @@ const App = () => {
     ]);
   };
 
-const ListItem = ({ todo }) => {
+  const ListItem = ({ todo }) => {
     return (
       <View style={styles.listItem}>
         <View style={{ flex: 1 }}>
@@ -78,6 +72,7 @@ const ListItem = ({ todo }) => {
               color: COLORS.primary,
               textDecorationLine: todo.completed ? "line-through" : "none",
             }}
+            data={todos.filter((todo) => !todo.completed)}
           >
             {todo.task}
           </Text>
@@ -97,14 +92,11 @@ const ListItem = ({ todo }) => {
       </View>
     );
   };
-
-
-  
-return (
+  return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: "white",
+        backgroundColor: "#ede1e1",
       }}
     >
       <View style={styles.header}>
@@ -112,7 +104,12 @@ return (
           style={{
             fontWeight: "bold",
             fontSize: 20,
-            color: COLORS.primary,
+            backgroundColor: "rgb(144, 112, 125)",
+            color:"white",
+            flex:1,
+            height: 50,
+            paddingHorizontal: 20,
+            elevation: 40,
           }}
         >
           TODO APP
@@ -125,19 +122,53 @@ return (
           style={{
             fontWeight: "bold",
             fontSize: 20,
-            color: COLORS.primary,
+            color: "#0764b5",
           }}
         >
           PROGRESS
         </Text>
       </View>
       <FlatList
+        data={todos.filter((todo) => !todo.completed)}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ padding: 20, paddingBottom: 100 }}
-        data={todos}
         renderItem={({ item }) => <ListItem todo={item} />}
       />
 
+      <View style={styles.header}>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 20,
+            color: "#0764b5",
+          }}
+        >
+          TASK NOT COMPLETED
+        </Text>
+      </View>
+      <FlatList
+        data={todos.filter((todo) => !todo.completed)}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ padding: 20, paddingBottom: 100 }}
+        renderItem={({ item }) => <ListItem todo={item} />}
+      />
+      <View style={styles.header}>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 20,
+            color: "#0764b5",
+          }}
+        >
+TASK COMPLETED
+        </Text>
+      </View>
+      <FlatList
+        data={todos.filter((todo) => todo.completed)}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ padding: 20, paddingBottom: 100 }}
+        renderItem={({ item }) => <ListItem todo={item} />}
+      />
       <View style={styles.footer}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -155,7 +186,11 @@ return (
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
+  body: {
+   backgroundColor:"#332424" 
+  },
   footer: {
     position: "absolute",
     bottom: 0,
@@ -165,7 +200,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "#90707D",
   },
-  inputContainer: {
+inputContainer: {
     height: 50,
     paddingHorizontal: 20,
     elevation: 40,
